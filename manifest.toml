@@ -34,7 +34,7 @@ ram.runtime = "50M"
  [resources.sources]
     [resources.sources.main]
     url = "https://github.com/skyuk3000/simplex_ynh/releases/download/5.0.0/smp-server"
-    sha256 = "CABC03316C837C6B2B7D07B45FB6BB7F1CB24A14BB7C73EEB1208DE431D4AD4F"
+    sha256 = "cabc03316c837c6b2b7d07b45fb6bb7f1cb24a14bb7c73eeb1208de431d4ad4f"
     in_subdir = false
     extract   = false
     rename    = "smp-server"
