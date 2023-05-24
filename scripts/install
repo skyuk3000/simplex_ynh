@@ -16,6 +16,7 @@ source /usr/share/yunohost/helpers
 #storage_quota="20gb"
 #ynh_app_setting_set --app=$app --key=storage_quota --value=$storage_quota
 domain=$(cat /etc/yunohost/current_host)
+ynh_app_setting_set --app=$app --key=domain --value=$domain
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
