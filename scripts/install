@@ -15,8 +15,7 @@ source /usr/share/yunohost/helpers
 
 #storage_quota="20gb"
 #ynh_app_setting_set --app=$app --key=storage_quota --value=$storage_quota
-domain=$(cat /etc/yunohost/current_host)
-ynh_app_setting_set --app=$app --key=domain --value=$domain
+
 
 #=================================================
 # DOWNLOAD, CHECK AND UNPACK SOURCE
@@ -41,6 +40,8 @@ chmod +x $install_dir/xftp-server
 
 public_ip4="$(curl -s ip.yunohost.org)" || true
 ynh_app_setting_set --app=$app --key=public_ip4 --value=$public_ip4
+domain=$(cat /etc/yunohost/current_host)
+ynh_app_setting_set --app=$app --key=domain --value=$domain
 
 pushd "$install_dir"
 	./smp-server init --no-password --fqdn $domain --store-log --yes
