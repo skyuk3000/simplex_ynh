@@ -1,4 +1,4 @@
 Adresses de votre serveur SMP :
 
-smp://__FINGERPRINT__@__DOMAIN__:__PORT__
-xftp://__XFTP_FINGERPRINT__@__PUBLIC_IP4__:__PORT_XFTP__
+smp://__FINGERPRINT__@__DOMAIN__
+xftp://__XFTP_FINGERPRINT__@__DOMAIN__
