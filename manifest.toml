@@ -5,9 +5,9 @@ name = "SimpleX"
 description.en = "Messaging platform operating without user identifiers"
 description.fr = "Plate-forme de messagerie fonctionnant sans identifiants d'utilisateurs"
 
-version = "5.0.0~ynh2"
+version = "5.7.5~ynh1"
 
-maintainers = ["eric_G"]
+maintainers = []
 
 [upstream]
 license = "AGPL-3.0"
@@ -18,11 +18,14 @@ cpe = "cpe:2.3:a:simplex:simplex_chat"
 fund = "https://opencollective.com/simplex-chat"
 
 [integration]
-yunohost = ">= 11.1.19"
+yunohost = ">= 11.2"
 architectures = ["amd64", "arm64"]
 multi_instance = false
+
 ldap = "not_relevant"
+
 sso = "not_relevant"
+
 disk = "50M"
 ram.build = "150M"
 ram.runtime = "50M"
@@ -35,19 +38,19 @@ ram.runtime = "50M"
 
  [resources.sources]
     [resources.sources.main]
-    amd64.url = "https://github.com/YunoHost-Apps/simplex_ynh/releases/download/v5.0.0.1/smp-server_amd64"
-    amd64.sha256 = "fd5c88355496ae09aad7dba582be99307813a18550d870b742c12b8a17f41b71"
-    arm64.url = "https://github.com/YunoHost-Apps/simplex_ynh/releases/download/v5.0.0.1/smp-server_arm64"
-    arm64.sha256 = "b59f26e4ad1a5a8b1e0e6d564c01a713d26c4b01dd6f1e27dea8961df2468002"
+    amd64.url = "https://github.com/YunoHost-Apps/simplex_ynh/releases/download/v5.7.5/smp-server_amd64"
+    amd64.sha256 = "b507e3b7c381eefa96ec1f9f7648ded78cc971827e90f5a137335045d67425e8"
+    arm64.url = "https://github.com/YunoHost-Apps/simplex_ynh/releases/download/v5.7.5/smp-server_arm64"
+    arm64.sha256 = "525a7f3d2a361cf3344cfff2358c615b827418eb98d6c390d183b7e40fb008d4"
     in_subdir = false
     extract   = false
     rename    = "smp-server"
 
     [resources.sources.xftp]
-    amd64.url = "https://github.com/YunoHost-Apps/simplex_ynh/releases/download/v5.0.0.1/xftp-server_amd64"
-    amd64.sha256 = "24535308621ff9e46d4630fde74cc2f1c8892f1ce1230ce6a538892be64d34f6"
-    arm64.url = "https://github.com/YunoHost-Apps/simplex_ynh/releases/download/v5.0.0.1/xftp-server_arm64"
-    arm64.sha256 = "e48e2a57e1992616e33be2b1bda564a978f8bdef3a5e30dce55712bc66278348"
+    amd64.url = "https://github.com/YunoHost-Apps/simplex_ynh/releases/download/v5.7.5/xftp-server_amd64"
+    amd64.sha256 = "f4182dd6ad65862705bc7fdd2c10f5e38a5483344e832ec84b7a2fc288c74ef6"
+    arm64.url = "https://github.com/YunoHost-Apps/simplex_ynh/releases/download/v5.7.5/xftp-server_arm64"
+    arm64.sha256 = "b406b793383b0dd202d6bd60f9d0054d2c4249ac34e4d87c731bb131019c1561"
     in_subdir = false
     extract   = false
     rename    = "xftp-server"
