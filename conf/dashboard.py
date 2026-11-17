@@ -66,48 +66,57 @@ def latest_xftp_stats():
         lines = f.read().decode(errors="replace").splitlines()
     return lines[-1] if lines else "No statistics recorded."
 
-def server_qr():
-    """Construct a shareable address from the currently running SMP identity."""
-    fingerprint = Path("/etc/opt/simplex/fingerprint").read_text().strip()
-    host = setting(SMP, "TRANSPORT", "host").strip()
-    ports = setting(SMP, "TRANSPORT", "port").split(",")
+def server_qr(kind, config, fingerprint_path):
+    """Render a QR code for the current SMP or XFTP server identity."""
+    if kind not in ("SMP", "XFTP"):
+        raise ValueError("Unsupported server type")
+    fingerprint = Path(fingerprint_path).read_text().strip().rstrip("=")
+    host = setting(config, "TRANSPORT", "host").strip()
+    ports = setting(config, "TRANSPORT", "port").split(",")
     port = int(ports[0].strip())
-    if not re.fullmatch(r"[A-Za-z0-9_=-]{20,100}", fingerprint):
-        raise ValueError("Invalid SMP fingerprint")
+    if not re.fullmatch(r"[A-Za-z0-9_-]{20,100}", fingerprint):
+        raise ValueError("Invalid " + kind + " fingerprint")
     if not re.fullmatch(r"[A-Za-z0-9.:-]{1,253}", host):
-        raise ValueError("Invalid SMP host")
+        raise ValueError("Invalid " + kind + " host")
     if not 1 <= port <= 65535:
-        raise ValueError("Invalid SMP port")
-    # A password is optional. Preserve it only when actually configured.
+        raise ValueError("Invalid " + kind + " port")
+    # The optional queue/file-creation password belongs in the shared URL.
     try:
-        password = setting(SMP, "AUTH", "create_password")
+        password = setting(config, "AUTH", "create_password")
     except ValueError:
         password = ""
-    if password and not re.fullmatch(r"[^\s@:]{1,256}", password):
-        raise ValueError("Invalid queue-creation password")
-    address = "smp://" + fingerprint.rstrip("=") + (":" + password if password else "") + "=@" + host + ":" + str(port)
+    if password and not re.fullmatch(r"[^\\s@:]{1,256}", password):
+        raise ValueError("Invalid " + kind + " creation password")
+    scheme = "smp" if kind == "SMP" else "xftp"
+    address = scheme + "://" + fingerprint + (":" + password if password else "") + "=@" + host + ":" + str(port)
     result = subprocess.run(
         ["/usr/bin/qrencode", "-t", "SVG", "-m", "2", "-o", "-", address],
         capture_output=True, text=True, timeout=3, check=True,
     )
     svg = re.search(r"<svg\b[\s\S]*?</svg>", result.stdout, flags=re.IGNORECASE)
     if not svg:
-        raise ValueError("Could not generate QR SVG")
-    # qrencode generates the SVG locally; no remote QR service is contacted.
-    return ('<section><h2>Add this SMP server</h2>'
+        raise ValueError("Could not generate " + kind + " QR SVG")
+    code_id = "server-address-" + scheme
+    safe_address = html.escape(address)
+    return ('<section><h2>Add this ' + kind + ' server</h2>'
             '<p>Scan this code with SimpleX Chat, or copy the server address below.</p>'
             '<div class="qr">' + svg.group(0) + '</div>'
-            '<div class="address"><code id="server-address">' + html.escape(address) + '</code></div>'
-            '<button type="button" onclick="navigator.clipboard.writeText(document.getElementById(\'server-address\').textContent)">Copy server address</button>'
+            '<div class="address"><code id="' + code_id + '">' + safe_address + '</code></div>'
+            '<button type="button" onclick="navigator.clipboard.writeText(document.getElementById(\''
+            + code_id + '\').textContent)">Copy ' + kind + ' server address</button>'
             '<p class="note">This is a server address, not a personal contact invite. '
             'It uses the current TLS fingerprint and configured host/port.</p></section>')
 
 def render():
     sections = []
-    try:
-        sections.append(server_qr())
-    except Exception as exc:
-        sections.append("<section><h2>SMP server QR</h2><p>Unavailable: " + html.escape(str(exc)) + "</p></section>")
+    for kind, config, fingerprint in (
+        ("SMP", SMP, "/etc/opt/simplex/fingerprint"),
+        ("XFTP", XFTP, "/etc/opt/simplex-xftp/fingerprint"),
+    ):
+        try:
+            sections.append(server_qr(kind, config, fingerprint))
+        except Exception as exc:
+            sections.append("<section><h2>" + kind + " server QR</h2><p>Unavailable: " + html.escape(str(exc)) + "</p></section>")
     for title, path, commands in (
         ("SMP messaging", SMP, ("stats", "server-info", "sockets")),
         ("XFTP file transfers", XFTP, ("help",)),
