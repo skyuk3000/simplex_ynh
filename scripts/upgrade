@@ -57,25 +57,8 @@ fi
 
 #ynh_config_add --template="file-server.ini" --destination="/etc/opt/simplex-xftp/file-server.ini"
 
-# Repair installations that have SMP's default embedded HTTPS server
-# enabled without its web certificates. Preserve configured HTTPS sites.
-# Keep the transport listeners on YunoHost's allocated ports.
-if [ -f /etc/opt/simplex/smp-server.ini ]; then
-    sed -i "/^\\[TRANSPORT\\]/,/^\\[/{s/^port:.*/port: $port/;}" /etc/opt/simplex/smp-server.ini
-fi
-if [ -f /etc/opt/simplex-xftp/file-server.ini ]; then
-    sed -i "/^\\[TRANSPORT\\]/,/^\\[/{s/^port:.*/port: $port_xftp/;}" /etc/opt/simplex-xftp/file-server.ini
-    sed -i '/^\[WEB\]/,/^\[/{s/^\(https:\|static_path:\|cert:\|key:\)/#\1/;}' /etc/opt/simplex-xftp/file-server.ini
-fi
-
-if [ -f /etc/opt/simplex/smp-server.ini ] && \
-   { [ ! -s /etc/opt/simplex/web.crt ] || [ ! -s /etc/opt/simplex/web.key ]; }; then
-	# YunoHost nginx owns HTTPS port 443. SMP 6.5 enables an embedded
-	# HTTPS website by default, but its web.crt/web.key are not provisioned.
-	# Disable that optional website and use the allocated SMP TCP port.
-	sed -i "/^\\[TRANSPORT\\]/,/^\\[/{s/^port:.*/port: $port/;}" /etc/opt/simplex/smp-server.ini
-	sed -i '/^\[WEB\]/,/^\[/{s/^\(https:\|static_path:\|cert:\|key:\)/#\1/;}' /etc/opt/simplex/smp-server.ini
-fi
+# Reconcile listener configuration while preserving existing CA identities.
+python3 "$YNH_APP_BASEDIR/conf/configure.py" "$port" "$port_xftp" "$port_web" "$port_smp_control" "$port_xftp_control"
 
 #=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
