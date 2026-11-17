@@ -29,6 +29,10 @@ ynh_backup "/var/opt/simplex-xftp"
 # BACKUP SYSTEMD
 #=================================================
 
+if [ -n "${domain:-}" ] && [ -f "/etc/nginx/conf.d/$domain.d/$app.conf" ]; then
+    ynh_backup "/etc/nginx/conf.d/$domain.d/$app.conf"
+fi
+
 ynh_backup "/etc/systemd/system/$app.service"
 ynh_backup "/etc/systemd/system/xftp.service"
 
