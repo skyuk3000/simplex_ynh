@@ -21,16 +21,16 @@ _set_panel_setting() {
     rm -f "$backup"
 }
 
-getter__smp_retention_days() { _get_panel_setting smp_retention_days; }
-setter__smp_retention_days() { _set_panel_setting smp_retention_days "$smp_retention_days"; }
+get__smp_retention_days() { _get_panel_setting smp_retention_days; }
+set__smp_retention_days() { _set_panel_setting smp_retention_days "$smp_retention_days"; }
 
-getter__smp_stats_enabled() { _get_panel_setting smp_stats_enabled; }
-setter__smp_stats_enabled() { _set_panel_setting smp_stats_enabled "$smp_stats_enabled"; }
+get__smp_stats_enabled() { _get_panel_setting smp_stats_enabled; }
+set__smp_stats_enabled() { _set_panel_setting smp_stats_enabled "$smp_stats_enabled"; }
 
-getter__smp_operator_name() { _get_panel_setting smp_operator_name; }
-setter__smp_operator_name() { _set_panel_setting smp_operator_name "$smp_operator_name"; }
+get__smp_operator_name() { _get_panel_setting smp_operator_name; }
+set__smp_operator_name() { _set_panel_setting smp_operator_name "$smp_operator_name"; }
 
-getter__smp_admin_contact() { _get_panel_setting smp_admin_contact; }
-setter__smp_admin_contact() { _set_panel_setting smp_admin_contact "$smp_admin_contact"; }
+get__smp_admin_contact() { _get_panel_setting smp_admin_contact; }
+set__smp_admin_contact() { _set_panel_setting smp_admin_contact "$smp_admin_contact"; }
 
 ynh_app_config_run "$1"
