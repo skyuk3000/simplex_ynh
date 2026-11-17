@@ -1,0 +1,25 @@
+[Unit]
+Description=SimpleX read-only monitoring dashboard
+After=network.target simplex.service xftp.service
+Wants=simplex.service xftp.service
+
+[Service]
+Type=simple
+User=__APP__
+Group=__APP__
+WorkingDirectory=__INSTALL_DIR__
+Environment=SIMPLEX_DASHBOARD_PORT=__PORT_DASHBOARD__
+ExecStart=/usr/bin/python3 __INSTALL_DIR__/dashboard.py
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=full
+ProtectHome=yes
+PrivateDevices=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target
