@@ -65,6 +65,10 @@ python3 "$YNH_APP_BASEDIR/conf/configure.py" "$port" "$port_xftp" "$port_web" "$
 #=================================================
 ynh_script_progression "Upgrading system configurations related to $app..."
 
+# Existing non-web installations must have a domain assigned before nginx is created.
+if [ -n "${domain:-}" ]; then
+    ynh_config_add_nginx
+fi
 ynh_config_add_systemd
 ynh_config_add_systemd --service=xftp --template=../conf/xftp.systemd.service
 
