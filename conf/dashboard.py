@@ -85,7 +85,7 @@ def server_qr():
         password = ""
     if password and not re.fullmatch(r"[^\s@:]{1,256}", password):
         raise ValueError("Invalid queue-creation password")
-    address = "smp://" + fingerprint + (":" + password if password else "") + "=@" + host + ":" + str(port)
+    address = "smp://" + fingerprint.rstrip("=") + (":" + password if password else "") + "=@" + host + ":" + str(port)
     result = subprocess.run(
         ["/usr/bin/qrencode", "-t", "SVG", "-m", "2", "-o", "-", address],
         capture_output=True, text=True, timeout=3, check=True,
