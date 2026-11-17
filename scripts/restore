@@ -29,6 +29,10 @@ ynh_restore "/var/opt/simplex-xftp"
 
 chown -R $app:$app /var/opt/simplex-xftp /var/opt/simplex /etc/opt/simplex-xftp /etc/opt/simplex
 
+if [ -n "${domain:-}" ]; then
+    ynh_config_add_nginx
+fi
+
 ynh_restore "/etc/systemd/system/$app.service"
 systemctl enable $app.service --quiet
 ynh_restore "/etc/systemd/system/xftp.service"
