@@ -41,6 +41,10 @@ popd
 sed -i "/^\\[TRANSPORT\\]/,/^\\[/{s/^port:.*/port: $port/;}" /etc/opt/simplex/smp-server.ini
 sed -i '/^\[WEB\]/,/^\[/{s/^\(https:\|static_path:\|cert:\|key:\)/#\1/;}' /etc/opt/simplex/smp-server.ini
 
+# Apply the equivalent port/website settings to the XFTP server.
+sed -i "/^\\[TRANSPORT\\]/,/^\\[/{s/^port:.*/port: $port_xftp/;}" /etc/opt/simplex-xftp/file-server.ini
+sed -i '/^\[WEB\]/,/^\[/{s/^\(https:\|static_path:\|cert:\|key:\)/#\1/;}' /etc/opt/simplex-xftp/file-server.ini
+
 fingerprint=$(cat /etc/opt/simplex/fingerprint)
 ynh_app_setting_set --key=fingerprint --value=$fingerprint
 
