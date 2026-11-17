@@ -77,6 +77,8 @@ ram.runtime = "50M"
     smp_control.exposed = false
     xftp_control.default = 5226
     xftp_control.exposed = false
+    dashboard.default = 5229
+    dashboard.exposed = false
 
     [resources.system_user]
 
