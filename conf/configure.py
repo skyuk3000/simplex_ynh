@@ -58,6 +58,7 @@ if __name__ == '__main__':
         'AUTH': {'control_port_admin_password': '', 'control_port_user_password': ''},
         'TRANSPORT': {'port': smp_port, 'control_port': smp_control},
         'WEB': {'http': web_port, 'https': None, 'cert': None, 'key': None},
+        'INFORMATION': {'source_code': 'https://github.com/simplex-chat/simplexmq'},
     })
     set_options('/etc/opt/simplex-xftp/file-server.ini', {
         'AUTH': {'control_port_admin_password': '', 'control_port_user_password': ''},
