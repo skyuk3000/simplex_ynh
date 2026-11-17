@@ -35,6 +35,12 @@ pushd "$install_dir"
 	./xftp-server init --ip $public_ip4 --quota '20gb' --store-log --path $data_dir
 popd
 
+# YunoHost nginx owns HTTPS port 443. SMP 6.5 enables an embedded
+# HTTPS website by default, but its web.crt/web.key are not provisioned.
+# Disable that optional website and use the allocated SMP TCP port.
+sed -i "/^\\[TRANSPORT\\]/,/^\\[/{s/^port:.*/port: $port/;}" /etc/opt/simplex/smp-server.ini
+sed -i '/^\[WEB\]/,/^\[/{s/^\(https:\|static_path:\|cert:\|key:\)/#\1/;}' /etc/opt/simplex/smp-server.ini
+
 fingerprint=$(cat /etc/opt/simplex/fingerprint)
 ynh_app_setting_set --key=fingerprint --value=$fingerprint
 
