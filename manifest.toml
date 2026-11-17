@@ -80,6 +80,9 @@ ram.runtime = "50M"
     dashboard.default = 5229
     dashboard.exposed = false
 
+    [resources.apt]
+    packages = "qrencode"
+
     [resources.system_user]
 
     [resources.install_dir]
