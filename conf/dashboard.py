@@ -83,14 +83,14 @@ def server_qr():
         password = setting(SMP, "AUTH", "create_password")
     except ValueError:
         password = ""
-    if password and not re.fullmatch(r"[^\\s@:]{1,256}", password):
+    if password and not re.fullmatch(r"[^\s@:]{1,256}", password):
         raise ValueError("Invalid queue-creation password")
     address = "smp://" + fingerprint + (":" + password if password else "") + "=@" + host + ":" + str(port)
     result = subprocess.run(
         ["/usr/bin/qrencode", "-t", "SVG", "-m", "2", "-o", "-", address],
         capture_output=True, text=True, timeout=3, check=True,
     )
-    svg = re.search(r"<svg\\b[\\s\\S]*?</svg>", result.stdout, flags=re.IGNORECASE)
+    svg = re.search(r"<svg\b[\s\S]*?</svg>", result.stdout, flags=re.IGNORECASE)
     if not svg:
         raise ValueError("Could not generate QR SVG")
     # qrencode generates the SVG locally; no remote QR service is contacted.
