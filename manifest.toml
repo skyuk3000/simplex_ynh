@@ -59,6 +59,12 @@ ram.runtime = "50M"
     main.exposed = "TCP"
     xftp.default = 5224
     xftp.exposed = "TCP"
+    web.default = 5228
+    web.exposed = false
+    smp_control.default = 5225
+    smp_control.exposed = false
+    xftp_control.default = 5226
+    xftp_control.exposed = false
 
     [resources.system_user]
 
