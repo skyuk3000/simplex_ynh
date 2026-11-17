@@ -1,0 +1,43 @@
+version = "1.0"
+
+[main]
+name.en = "SimpleX SMP server"
+
+    [main.retention]
+    name.en = "Messages and statistics"
+
+        [main.retention.smp_retention_days]
+        ask.en = "Message expiration (days)"
+        type = "number"
+        min = 1
+        max = 365
+        bind = "null"
+
+        [main.retention.smp_stats_enabled]
+        ask.en = "Enable daily statistics"
+        type = "boolean"
+        bind = "null"
+
+    [main.information]
+    name.en = "Server information"
+
+        [main.information.smp_operator_name]
+        ask.en = "Operator name (optional)"
+        type = "string"
+        optional = true
+        bind = "null"
+
+        [main.information.smp_admin_contact]
+        ask.en = "Administrator email (optional)"
+        type = "email"
+        optional = true
+        bind = "null"
+
+    [main.network]
+    name.en = "Networking"
+
+        [main.network.smp_ports_info]
+        type = "alert"
+        style = "info"
+        ask.en = "SMP and XFTP ports are managed by YunoHost app resources. The control ports are bound to localhost; the web listener is proxied through Nginx."
+        bind = "null"
